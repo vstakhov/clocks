@@ -5,16 +5,20 @@
 # http://creativecommons.org/licenses/by-nc-nd/3.0/us/deed.en
 #
 
-if [ `echo ${OSTYPE} | fgrep linux` -eq 0 ]; then
+uname | fgrep -i linux > /dev/null 2>&1
+if [ $? -eq 0 ]; then
   LIBRT="-lrt"
   TASKSET="taskset -c 1"
   JAVAINC=linux
   SOEXT=so
   # does this machine have rdtscp instruction?
-  if [ `grep rdtscp /proc/cpuinfo | wc -l` -gt 0 ] ; then
+  fgrep rdtscp /proc/cpuinfo > /dev/null 2>&1
+  if [ $? -gt 0 ] ; then
     RDTSCP=" -DRDTSCP=1 "
   fi
-elif [ `echo ${OSTYPE} | fgrep darwin` -eq 0 ]; then
+fi
+uname | fgrep -i darwin > /dev/null 2>&1
+if [ $? -eq 0 ]; then
   # assume RDTSCP -- not sure what else to do
   RDTSCP=" -DRDTSCP=1 "
   JAVAINC=darwin
