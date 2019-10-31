@@ -5,7 +5,7 @@
 # http://creativecommons.org/licenses/by-nc-nd/3.0/us/deed.en
 #
 
-if [ ${OSTYPE} == *linux* ]; then
+if [ x${OSTYPE} == *linux* ]; then
   LIBRT="-lrt"
   TASKSET="taskset -c 1"
   JAVAINC=linux
@@ -14,7 +14,7 @@ if [ ${OSTYPE} == *linux* ]; then
   if [ `grep rdtscp /proc/cpuinfo | wc -l` -gt 0 ] ; then
     RDTSCP=" -DRDTSCP=1 "
   fi
-elif [ ${OSTYPE} == *darwin* ]; then
+elif [ x${OSTYPE} == *darwin* ]; then
   # assume RDTSCP -- not sure what else to do
   RDTSCP=" -DRDTSCP=1 "
   JAVAINC=darwin
