@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <unistd.h>
 
+
 // http://c-faq.com/stdio/commaprint.html
 #include <locale.h>
 char *commaprint(unsigned long n)
@@ -59,8 +60,6 @@ int main(int argc, char** argv )
    printf("%25s\t%15s\t%15s\t", "gettimeofday","1,000", commaprint(tv.tv_sec));
    printf("%15s\n", commaprint(tv.tv_usec*1000));
    
-#if _POSIX_TIMERS > 0   
-
    #ifdef CLOCK_REALTIME
    do_clock(CLOCK_REALTIME);
    #endif
@@ -84,8 +83,14 @@ int main(int argc, char** argv )
    #ifdef CLOCK_MONOTONIC_COARSE
    do_clock(CLOCK_MONOTONIC_COARSE);
    #endif
-   
-#endif
 
+   #ifdef CLOCK_MONOTONIC_FAST
+   do_clock(CLOCK_MONOTONIC_FAST);
+   #endif
+
+   #ifdef CLOCK_MONOTONIC_RAW_APPROX
+   do_clock(CLOCK_MONOTONIC_RAW_APPROX);
+   #endif
+   
    return 0;
 }
