@@ -5,34 +5,37 @@
 # http://creativecommons.org/licenses/by-nc-nd/3.0/us/deed.en
 #
 
-if [[ ${OSTYPE} == *linux* ]]; then
+if [ ${OSTYPE} == *linux* ]; then
   LIBRT="-lrt"
   TASKSET="taskset -c 1"
   JAVAINC=linux
   SOEXT=so
   # does this machine have rdtscp instruction?
-  if [[ $(grep rdtscp /proc/cpuinfo | wc -l) -gt 0 ]] ; then
+  if [ `grep rdtscp /proc/cpuinfo | wc -l` -gt 0 ] ; then
     RDTSCP=" -DRDTSCP=1 "
   fi
-elif [[ ${OSTYPE} == *darwin* ]]; then
+elif [ ${OSTYPE} == *darwin* ]; then
   # assume RDTSCP -- not sure what else to do
   RDTSCP=" -DRDTSCP=1 "
   JAVAINC=darwin
   SOEXT=jnilib
 fi
 
+CC=${CC:-cc}
+CXX=${CXX:-c++}
+CPPFLAGS=${CPPFLAGS:--O2 -g}
 
 ## show available clocks
 echo;echo "clocks.c"
-gcc -O2 -o clocks clocks.c ${LIBRT} && ./clocks
+${CC} ${CFLAGS} ${CPPFLAGS} -o clocks clocks.c ${LIBRT} && ./clocks
 
 
 # benchmark clocks
 # cpp side
 echo;echo "ClockBench.cpp"
-g++ -O2 -g ${LIBRT} ${RDTSCP} -o ClockBench ClockBench.cpp && ${TASKSET} ./ClockBench $*
+${CXX} ${CXXFLAGS} ${CPPFLAGS} ${LIBRT} ${RDTSCP} -o ClockBench ClockBench.cpp && ${TASKSET} ./ClockBench $*
 
-if [[ -z ${JAVA_HOME} ]]; then
+if [ -z ${JAVA_HOME} ]; then
    echo
    echo "Set JAVA_HOME to run Java benchmark"
 else
