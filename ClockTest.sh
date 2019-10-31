@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Copyright 2014 by Bill Torpey. All Rights Reserved.
 # This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivs 3.0 United States License.
@@ -24,12 +24,13 @@ fi
 
 ## show available clocks
 echo;echo "clocks.c"
-gcc -o clocks clocks.c ${LIBRT} && ./clocks
+gcc -O2 -o clocks clocks.c ${LIBRT} && ./clocks
+
 
 # benchmark clocks
 # cpp side
 echo;echo "ClockBench.cpp"
-g++ -O3 -ggdb ${LIBRT} ${RDTSCP} -o ClockBench ClockBench.cpp && ${TASKSET} ./ClockBench $*
+g++ -O2 -g ${LIBRT} ${RDTSCP} -o ClockBench ClockBench.cpp && ${TASKSET} ./ClockBench $*
 
 if [[ -z ${JAVA_HOME} ]]; then
    echo
