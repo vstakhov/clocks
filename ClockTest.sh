@@ -13,7 +13,7 @@ if [ $? -eq 0 ]; then
   SOEXT=so
   # does this machine have rdtscp instruction?
   fgrep rdtscp /proc/cpuinfo > /dev/null 2>&1
-  if [ $? -gt 0 ] ; then
+  if [ $? -eq 0 ] ; then
     RDTSCP=" -DRDTSCP=1 "
   fi
 fi
